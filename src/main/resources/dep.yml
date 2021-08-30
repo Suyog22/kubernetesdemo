@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
         - name: springboot-k8s-mysql
-          image: suyogmajgaonkar/demo-kube:latest
+          image: suyogmajgaonkar/kubernetesdemo:latest
           ports:
             - containerPort: 8181
           env:   # Setting Enviornmental Variables
