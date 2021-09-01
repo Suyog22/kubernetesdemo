@@ -1,0 +1,49 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: springboot-k8s-mysql2
+  labels:
+    name: springboot-k8s-mysql2
+spec:
+  ports:
+    - nodePort: 30163
+      port: 8086
+      targetPort: 8086
+      protocol: TCP
+  selector:
+    app: springboot-k8s-mysql2
+  type: NodePort
+
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-k8s-mysql2
+spec:
+  selector:
+    matchLabels:
+      app: springboot-k8s-mysql2
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: springboot-k8s-mysql2
+    spec:
+      containers:
+        - name: springboot-k8s-mysql2
+          image: suyogmajgaonkar/kubernetesdemo:1.2
+          ports:
+            - containerPort: 8086
+          env:   # Setting Enviornmental Variables
+          - name: DB_HOST   # Setting Database host address from configMap
+            valueFrom:
+              configMapKeyRef:
+                name: db-config  # name of configMap
+                key: host
+          - name: DB_NAME  # Setting Database name from configMap
+            valueFrom:
+              configMapKeyRef:
+                name: db-config
+                key: name
